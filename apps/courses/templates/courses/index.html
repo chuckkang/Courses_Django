@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	 {% load static %}
+	<link rel="stylesheet" href="{% static 'courses/css/style.css' %}">
+	<script src="{% static 'courses/js/js.js' %}"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	
+</head>
+
+<body>
+	<div id="wrapper">
+		<div id="courses">
+			<h2 align="center">Add a new course<p style="color:red">
+				{% if messages %} {% for message in messages %} {{message}} {% endfor %} {% endif %}
+			</p></h2>
+			
+			<form method="POST" action="add_course">
+				Title: <input type="text" name="title" value="{{title}}">
+				<p>Description:</p>
+				<textarea rows="5" cols="50" name="description">{{description}}</textarea>
+				{% csrf_token %}
+				<input type="submit" value="Add Course">
+			</form><br>
+		</div>
+		{% if course_data %}
+		<div id="courses">
+			<table width="500" align="center" border="1">
+				<tr>
+					<th>Course Name:</th> <th>Description:</th>
+					<th>Date Added: </th>
+					<th>Actions: </th>
+					<th>Comment: </th>
+				</tr>
+				{% for x in context.course_data %}
+					{{x}}
+				{% endfor %}
+				{% for course in course_data %}
+				<tr>
+					<td>{{course.title}}</td>
+					<td>{{course.description}}</td>
+					<td>{{course.created_at}}</td>
+					<td><a href="delete/{{course.id}}">DELETE</td>
+					<td><a href="comments/{{course.id}}">Comment</td>
+				</tr>
+				{% endfor %}
+			</table>
+
+		</div>
+		{% endif %}
+	</div>
+</body>
+<style>
+
+	#courses{
+		/* border: 2px solid black; */
+		width:80%;
+		margin: auto;
+		text-align: left;
+	}
+</style>
+</html>
